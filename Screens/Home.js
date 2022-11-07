@@ -37,7 +37,7 @@ export default function Home() {
         },
       );
       if (access == 'granted') {
-        console.log('Android location enabled');
+        console.log('[Android location enabled]');
         Geolocation.getCurrentPosition(
           position => {
             console.log(position);
@@ -57,10 +57,11 @@ export default function Home() {
     const access = await Geolocation.requestAuthorization('always').then(
       res => {
         if (res == 'granted') {
-          console.log('IOS location enabled');
+          console.log('[IOS location enabled]');
           Geolocation.getCurrentPosition(
             position => {
-              console.log(position);
+              console.log('\tLongitude: ' + position.coords.longitude);
+              console.log('\tLatitude: ' + position.coords.latitude);
               setLocation(position);
             },
             error => {
@@ -74,12 +75,13 @@ export default function Home() {
   };
 
   useEffect(() => {
+    console.log('[RENDERING]: Home Screen');
     if (isLoading) {
       if (Platform.OS == 'ios') requestIphoneLocation();
       if (Platform.OS == 'android') requestAndroidLocation();
       setIsLoading(false);
     }
-  });
+  }, [isLoading]);
   // View:
   return (
     <SafeAreaView>

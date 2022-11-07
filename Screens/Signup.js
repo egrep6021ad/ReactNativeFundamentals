@@ -39,8 +39,8 @@ export default function Signup() {
     try {
       const name = await AsyncStorage.getItem(`name`);
       const email = await AsyncStorage.getItem(`email`);
-      console.log(name);
-      console.log(email);
+      console.log('Current user: ' + name);
+      console.log("Current user's email: " + email);
       if (email != null && name != null) navigation.navigate('Home');
     } catch (error) {
       console.log(error);
@@ -48,6 +48,7 @@ export default function Signup() {
   };
 
   useEffect(() => {
+    console.log('[RENDERING]: Signup Screen');
     if (isLoading) {
       getLocalData();
       setIsLoading(false);
