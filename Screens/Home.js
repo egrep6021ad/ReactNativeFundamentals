@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
+import {LogBox} from 'react-native';
 
 export default function Home() {
   // Local navigation reference:
@@ -40,7 +41,8 @@ export default function Home() {
         console.log('[Android location enabled]');
         Geolocation.getCurrentPosition(
           position => {
-            console.log(position);
+            console.log('\tLongitude: ' + position.coords.longitude);
+            console.log('\tLatitude: ' + position.coords.latitude);
             setLocation(position);
           },
           error => {
@@ -75,6 +77,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification
     console.log('[RENDERING]: Home Screen');
     if (isLoading) {
       if (Platform.OS == 'ios') requestIphoneLocation();
@@ -88,6 +91,7 @@ export default function Home() {
       <View style={styles.mainContainer}>
         <Text> Home </Text>
         <Button title="Workout" onPress={() => handleWorkoutButton()} />
+        <Button title="Diet" onPress={() => navigation.navigate('Diet')} />
       </View>
     </SafeAreaView>
   );

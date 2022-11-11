@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import Map from './Map';
+import BackgroundTimer from 'react-native-background-timer';
 
 export default function Workout({route, navigation}) {
   const [location, setLocation] = useState(route.params.location);
@@ -16,11 +17,41 @@ export default function Workout({route, navigation}) {
   const [showUserLocation, setShowUserLocation] = useState(false);
   const [followUserLocation, setFollowUserLocation] = useState(false);
   const [markers, setMarkers] = useState([]);
+  const [runStarted, setRunStarted] = useState(false);
+  const [globalTimer, setGlobalTimer] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [backgroundTimer, setBackgroundTime] = useState(BackgroundTimer);
+  const [totalTime, setTotalTime] = useState(0);
 
   const startRun = () => {
-    calculateDistance();
+    //calculateDistance();
     setFollowUserLocation(true);
     setShowUserLocation(true);
+    setRunStarted(true);
+
+    /*BackgroundTimer.start();
+    setGlobalTimer(
+      setInterval(() => {
+        calculateDistance();
+      }, 3000),
+    );
+    BackgroundTimer.runBackgroundTimer(() => {
+      calculateDistance();
+    }, 3000);*/
+    let x = 0;
+    backgroundTimer.setInterval(() => {
+      calculateDistance();
+      x += 1;
+      if (x == 4) backgroundTimer.clearInterval();
+    }, 1000);
+  };
+
+  const stopRun = () => {
+    backgroundTimer.clearInterval();
+    setShowUserLocation(false);
+    setFollowUserLocation(false);
+    //BackgroundTimer.stop();
+    //clearInterval(globalTimer);
   };
 
   const calculateDistance = () => {
@@ -47,14 +78,7 @@ export default function Workout({route, navigation}) {
         distance = c * r + totalDistance;
         console.log(distance);
         setTotalDistance(distance);
-        // update current location
         setLocation(position);
-        const latLng = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-        // Update array of markers:
-        setMarkers([...markers, latLng]);
       },
       error => {
         console.log(error.code, error.message);
@@ -65,7 +89,17 @@ export default function Workout({route, navigation}) {
 
   useEffect(() => {
     console.log('[RENDERING]: Workout Screen (' + Platform.OS + ')');
-  });
+    if (isLoading) {
+      setIsLoading(false);
+    }
+    if (runStarted) {
+      const latLng = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setMarkers([...markers, latLng]);
+    }
+  }, [location, totalDistance, backgroundTimer]);
 
   return (
     <SafeAreaView>
@@ -82,6 +116,7 @@ export default function Workout({route, navigation}) {
         </View>
         <Text style={styles.distanceText}> Distance: {totalDistance} </Text>
         <Button title="Start" onPress={() => startRun()} />
+        <Button title="Stop" onPress={() => stopRun()} />
       </View>
     </SafeAreaView>
   );
