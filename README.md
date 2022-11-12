@@ -17,6 +17,7 @@ Iphone:
 
 2. In VS code press "command + j" to open a new terminal
 3. Option 1: - Type the command "xed ios" - This will open the ios folder in Xcode - Press the xcode play button to run the app
+   </br>
    Option 2: - Type the command 'npx react-native run-ios --simulator="iPhone 14"'
 
 <i> Either scenario, a terminal should open to run the "Metro Server" This needs to stay open to see live updates and changes in the app while developing. Press "r" in the terminal window at anytime to reload the app.</i>
