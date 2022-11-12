@@ -121,7 +121,11 @@ export default function Workout({route}) {
           </Text>
         </View>
         <View style={styles.startButton}>
-          <Button color="white" title="Start" onPress={() => startRun()} />
+          <Button
+            color={Platform.OS == 'ios' ? 'white' : null}
+            title="Start"
+            onPress={() => startRun()}
+          />
         </View>
         <View style={styles.stopButton}>
           <Button color="black" title="Stop" onPress={() => stopRun()} />
@@ -139,7 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#BEDADC',
   },
   mapContainer: {
-    height: 400,
+    height: Platform.OS == 'ios' ? 400 : 300,
     width: 400,
   },
   distanceTextHolder: {
@@ -160,7 +164,7 @@ const styles = StyleSheet.create({
   startButton: {
     marginTop: 20,
     width: '80%',
-    backgroundColor: '#4CAF50',
+    backgroundColor: Platform.OS == 'ios' ? '#4CAF50' : null,
     borderRadius: 10,
     shadowColor: '#171717',
     shadowOffset: {width: -2, height: 4},

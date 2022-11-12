@@ -47,7 +47,7 @@ export default function Map(props) {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: 400,
+    height: Platform.OS == 'ios' ? 400 : 300,
     width: 400,
     display: 'flex',
     justifyContent: 'flex-end',
