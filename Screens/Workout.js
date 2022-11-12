@@ -6,7 +6,10 @@ import {
   Text,
   View,
   Button,
+  LogBox,
 } from 'react-native';
+LogBox.ignoreAllLogs();
+
 import Geolocation from 'react-native-geolocation-service';
 import Map from './Map';
 import BackgroundTimer from 'react-native-background-timer';
@@ -18,51 +21,21 @@ export default function Workout({route, navigation}) {
   const [followUserLocation, setFollowUserLocation] = useState(false);
   const [markers, setMarkers] = useState([]);
   const [runStarted, setRunStarted] = useState(false);
-  const [globalTimer, setGlobalTimer] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [backgroundTimer, setBackgroundTime] = useState(BackgroundTimer);
-  const [totalTime, setTotalTime] = useState(0);
+  const [globalTimer, setGlobalTimer] = useState(0);
 
   const startRun = () => {
-    //calculateDistance();
     setFollowUserLocation(true);
     setShowUserLocation(true);
     setRunStarted(true);
-
-    /*BackgroundTimer.start();
-    setGlobalTimer(
-      setInterval(() => {
-        calculateDistance();
-      }, 3000),
-    );
-    BackgroundTimer.runBackgroundTimer(() => {
-      calculateDistance();
-    }, 3000);*/
-    let x = 0;
-    backgroundTimer.setInterval(() => {
-      calculateDistance();
-      x += 1;
-      if (x == 4) backgroundTimer.clearInterval();
-    }, 1000);
-  };
-
-  const stopRun = () => {
-    backgroundTimer.clearInterval();
-    setShowUserLocation(false);
-    setFollowUserLocation(false);
-    //BackgroundTimer.stop();
-    //clearInterval(globalTimer);
-  };
-
-  const calculateDistance = () => {
-    Geolocation.getCurrentPosition(
+    // Watch the runner
+    Geolocation.watchPosition(
       position => {
+        // Calculate distance:
         //https://www.geeksforgeeks.org/program-distance-two-points-earth/
         lon1 = (location.coords.longitude * Math.PI) / 180;
         lon2 = (position.coords.longitude * Math.PI) / 180;
         lat1 = (location.coords.latitude * Math.PI) / 180;
         lat2 = (position.coords.latitude * Math.PI) / 180;
-
         // Haversine formula:
         let dlon = lon2 - lon1;
         let dlat = lat2 - lat1;
@@ -71,27 +44,39 @@ export default function Workout({route, navigation}) {
           Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
         let c = 2 * Math.asin(Math.sqrt(a));
         // Radius of earth in miles:
-
         let r = 3956;
-
-        // calculate the result + distance already traveled
+        // distance  + distance already traveled
         distance = c * r + totalDistance;
-        console.log(distance);
+
         setTotalDistance(distance);
         setLocation(position);
       },
       error => {
         console.log(error.code, error.message);
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 10, // Meters
+      },
     );
+
+    let time = 0;
+    BackgroundTimer.runBackgroundTimer(() => {
+      time += 1;
+      setGlobalTimer(time);
+    }, 1000);
+  };
+
+  const stopRun = () => {
+    setShowUserLocation(false);
+    setFollowUserLocation(false);
+    setRunStarted(false);
+    Geolocation.stopObserving();
+    BackgroundTimer.stopBackgroundTimer();
   };
 
   useEffect(() => {
     console.log('[RENDERING]: Workout Screen (' + Platform.OS + ')');
-    if (isLoading) {
-      setIsLoading(false);
-    }
     if (runStarted) {
       const latLng = {
         latitude: location.coords.latitude,
@@ -99,7 +84,15 @@ export default function Workout({route, navigation}) {
       };
       setMarkers([...markers, latLng]);
     }
-  }, [location, totalDistance, backgroundTimer]);
+
+    console.log('Distance: ' + totalDistance.toFixed(3) + ' miles');
+    console.log('Total time (seconds): ' + globalTimer);
+
+    return () => {
+      console.log('Unmounting: ');
+      Geolocation.clearWatch();
+    };
+  }, [location]);
 
   return (
     <SafeAreaView>
@@ -114,7 +107,12 @@ export default function Workout({route, navigation}) {
             />
           ) : null}
         </View>
-        <Text style={styles.distanceText}> Distance: {totalDistance} </Text>
+        <Text style={styles.distanceText}>
+          {` Distance: ${totalDistance.toFixed(3)} miles `}
+        </Text>
+        <Text style={styles.distanceText}>
+          {` Time: ${globalTimer} seconds`}
+        </Text>
         <Button title="Start" onPress={() => startRun()} />
         <Button title="Stop" onPress={() => stopRun()} />
       </View>
