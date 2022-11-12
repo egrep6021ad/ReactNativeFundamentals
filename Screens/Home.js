@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '100%',
+    backgroundColor: '#BEDADC',
   },
   startButton: {
     marginTop: 20,

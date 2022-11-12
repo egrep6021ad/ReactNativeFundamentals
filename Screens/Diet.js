@@ -50,7 +50,13 @@ export default function Diet() {
         }
         placeholderTextColor="gray"
       />
-      <Button title="Send" onPress={() => handleSendButton()} />
+      <View style={styles.startButton}>
+        <Button
+          color={Platform.OS == 'ios' ? 'white' : null}
+          title="Send"
+          onPress={() => handleSendButton()}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -61,14 +67,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '100%',
+    backgroundColor: '#BEDADC',
   },
   textInput: {
     height: Platform.OS == 'ios' ? 300 : 200,
     width: 300,
+    backgroundColor: 'white',
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 3,
     padding: 5,
     marginTop: '10%',
+    textAlignVertical: 'top',
+  },
+  startButton: {
+    marginTop: 20,
+    width: '80%',
+    backgroundColor: Platform.OS == 'ios' ? '#4CAF50' : null,
+    borderRadius: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
   },
 });

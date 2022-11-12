@@ -103,14 +103,12 @@ export default function Workout({route}) {
     <SafeAreaView>
       <View style={styles.mainContainer}>
         <View style={styles.mapContainer}>
-          {Platform.OS == 'ios' ? (
-            <Map
-              location={location}
-              showUserLocation={showUserLocation}
-              followUserLocation={followUserLocation}
-              markers={markers}
-            />
-          ) : null}
+          <Map
+            location={location}
+            showUserLocation={showUserLocation}
+            followUserLocation={followUserLocation}
+            markers={markers}
+          />
         </View>
         <View style={styles.distanceTextHolder}>
           <Text style={styles.distanceText}>
@@ -135,10 +133,10 @@ export default function Workout({route}) {
 const styles = StyleSheet.create({
   mainContainer: {
     display: 'flex',
-    //justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
     width: '100%',
+    backgroundColor: '#BEDADC',
   },
   mapContainer: {
     height: 400,
