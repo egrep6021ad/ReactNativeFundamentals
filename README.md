@@ -19,7 +19,7 @@ Android:
 6. In VS code press "command + j" to open a new terminal
 
 7. In the terminal type the command "npx react-native run-android"
-   (This will run the Metro server / send bundle to Android emulator)
+   (This will run the Metro Server / send bundle to Android emulator)
 
 Iphone:
 
