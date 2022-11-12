@@ -14,6 +14,12 @@ export default function Map(props) {
         // Could be always true in production
         followUserLocation={props.followUserLocation}
         showsUserLocation={props.showUserLocation}
+        region={{
+          latitude: props.location.coords.latitude,
+          longitude: props.location.coords.longitude,
+          latitudeDelta: 0.0052,
+          longitudeDelta: 0.0021,
+        }}
         // Initial map loads to the device location
         initialRegion={{
           latitude: props.location.coords.latitude,
