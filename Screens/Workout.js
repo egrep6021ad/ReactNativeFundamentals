@@ -5,16 +5,18 @@ import {
   Platform,
   Text,
   View,
+  Alert,
   Button,
   LogBox,
 } from 'react-native';
 LogBox.ignoreAllLogs();
-
+import {useNavigation} from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
 import Map from './Map';
 import BackgroundTimer from 'react-native-background-timer';
 
-export default function Workout({route, navigation}) {
+export default function Workout({route}) {
+  const navigation = useNavigation();
   const [location, setLocation] = useState(route.params.location);
   const [totalDistance, setTotalDistance] = useState(0);
   const [showUserLocation, setShowUserLocation] = useState(false);
@@ -73,6 +75,9 @@ export default function Workout({route, navigation}) {
     setRunStarted(false);
     Geolocation.stopObserving();
     BackgroundTimer.stopBackgroundTimer();
+    Alert.alert('Congrats!', `You ran: ${totalDistance} miles!`, [
+      {text: 'OK', onPress: () => navigation.navigate('Home')},
+    ]);
   };
 
   useEffect(() => {
@@ -107,14 +112,22 @@ export default function Workout({route, navigation}) {
             />
           ) : null}
         </View>
-        <Text style={styles.distanceText}>
-          {` Distance: ${totalDistance.toFixed(3)} miles `}
-        </Text>
-        <Text style={styles.distanceText}>
-          {` Time: ${globalTimer} seconds`}
-        </Text>
-        <Button title="Start" onPress={() => startRun()} />
-        <Button title="Stop" onPress={() => stopRun()} />
+        <View style={styles.distanceTextHolder}>
+          <Text style={styles.distanceText}>
+            {` Distance: ${totalDistance.toFixed(3)} miles `}
+          </Text>
+        </View>
+        <View style={styles.distanceTextHolder}>
+          <Text style={styles.distanceText}>
+            {` Time: ${globalTimer} seconds`}
+          </Text>
+        </View>
+        <View style={styles.startButton}>
+          <Button color="white" title="Start" onPress={() => startRun()} />
+        </View>
+        <View style={styles.stopButton}>
+          <Button color="black" title="Stop" onPress={() => stopRun()} />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -126,14 +139,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '100%',
-    backgroundColor: 'yellow',
   },
   mapContainer: {
     height: 400,
     width: 400,
   },
+  distanceTextHolder: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+    height: 50,
+    margin: 10,
+    padding: 10,
+    borderWidth: 1,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
   distanceText: {
+    fontSize: 20,
+  },
+  startButton: {
     marginTop: 20,
-    paddingBottom: 20,
+    width: '80%',
+    backgroundColor: '#4CAF50',
+    borderRadius: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+  stopButton: {
+    marginTop: 20,
+    width: '80%',
+    backgroundColor: '#F44336',
+    borderRadius: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
   },
 });

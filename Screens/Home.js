@@ -89,9 +89,20 @@ export default function Home() {
   return (
     <SafeAreaView>
       <View style={styles.mainContainer}>
-        <Text> Home </Text>
-        <Button title="Workout" onPress={() => handleWorkoutButton()} />
-        <Button title="Diet" onPress={() => navigation.navigate('Diet')} />
+        <View style={styles.startButton}>
+          <Button
+            color={Platform.OS == 'ios' ? 'white' : null}
+            title="Workout"
+            onPress={() => handleWorkoutButton()}
+          />
+        </View>
+        <View style={styles.stopButton}>
+          <Button
+            color="black"
+            title="Diet"
+            onPress={() => navigation.navigate('Diet')}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -104,5 +115,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '100%',
+  },
+  startButton: {
+    marginTop: 20,
+    width: '80%',
+    backgroundColor: Platform.OS == 'ios' ? '#FF6F00' : null,
+    borderRadius: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+  stopButton: {
+    marginTop: 20,
+    width: '80%',
+    backgroundColor: Platform.OS == 'ios' ? '#4CAF50' : null,
+    borderRadius: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
   },
 });

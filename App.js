@@ -13,7 +13,11 @@ const App: () => Node = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Signup">
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="Workout" component={Workout} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Diet" component={Diet} />
