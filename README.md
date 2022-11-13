@@ -4,6 +4,7 @@
 
 ---
 
+<img src='./final_product.png'/>
 1. Open the whole "ReactNativeFundamentals" folder in VS code.
 
 Android:
