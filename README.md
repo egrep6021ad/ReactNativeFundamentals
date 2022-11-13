@@ -1,5 +1,9 @@
 # DOCS:
 
+- https://github.com/egrep6021ad/ReactNativeFundamentals/blob/master/React%20Native.pdf
+
+OR
+
 - https://docs.google.com/presentation/d/1xkL1z9Y9wWIdfnLYfAYGJFkhvp7CjUOqijD_8PYPHhE/edit?usp=sharing
 
 ---
