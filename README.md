@@ -17,7 +17,7 @@ The "React Native" framework is built with the use of the "React JS" library at 
 
 ---
 
-- https://github.com/egrep6021ad/ReactNativeFundamentals/blob/master/React%20Native.pdf
+- https://github.com/egrep6021ad/ReactNativeFundamentals/blob/master/ReactNative.pdf
 
 OR
 
