@@ -39,7 +39,7 @@ This is things like Node, Watchman, Xcode, Android Studio, and more (dependent o
 
 The steps involved in setting up the React Native environment are different depending on if you are using a Mac or a Windows computer and if you want to run the iPhone version or Android version of the demonstration application. In either case, THESE STEPS ARE CRITICAL. In both cases you will need "Node" (version 16 or greater) at a minimum.
 
-## Execution Instructions:
+# Execution Instructions:
 
 ---
 
